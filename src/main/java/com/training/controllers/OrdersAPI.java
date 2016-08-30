@@ -1,0 +1,62 @@
+package com.training.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.training.repository.Orders;
+import com.training.repository.OrdersRepository;
+
+@RestController
+public class OrdersAPI {
+
+	@Autowired
+	private OrdersRepository orderRepo;
+
+	@RequestMapping(value = "/api/order", method = RequestMethod.POST)
+	public ResponseEntity<Orders> add(@RequestBody Orders manufacturer) {
+		orderRepo.save(manufacturer);
+		return new ResponseEntity<Orders>(manufacturer, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/api/order/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Orders> find(@PathVariable(value = "id") Integer id) {
+		Orders manufacturer = orderRepo.findOne(id);
+		return new ResponseEntity<Orders>(manufacturer, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/api/order", method = RequestMethod.GET, produces = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<List<Orders>> findAll() {
+		return new ResponseEntity<List<Orders>>(orderRepo.findAll(), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/api/order/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> delete(@PathVariable(value = "id") Integer id) {
+		orderRepo.delete(id);
+		return new ResponseEntity<String>("Deleted", HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/api/order/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<String> update(@PathVariable(value = "id") Integer id, @RequestBody Orders manufac) {
+		Orders man = orderRepo.findOne(id);
+		if (man != null) {
+			man.setOrderDate(manufac.getOrderDate());
+			man.setName(manufac.getName());
+			man.setIsActive(manufac.getIsActive());
+			orderRepo.save(man);
+		} else {
+			return new ResponseEntity<String>("Manufacturer not found", HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>("Updated", HttpStatus.OK);
+	}
+	
+}
