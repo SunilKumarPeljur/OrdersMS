@@ -4,6 +4,9 @@ spring:
   cloud:
     config:
       uri: http://localhost:9190
-      
+    consul:
+      discovery:
+        instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
 server:
-  port: 9196
+  port: ${PORT:${SERVER_PORT:0}}

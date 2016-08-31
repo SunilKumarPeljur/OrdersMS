@@ -40,6 +40,8 @@ public class Orders {
 	private Date orderDate;
 	
 	private Boolean isActive;
+	
+	private Integer manufacturerId;
 
 	public int getId() {
 		return id;
@@ -76,5 +78,13 @@ public class Orders {
 	@Override
 	public String toString() {
 		return "Orders [id=" + id + ", name=" + name + ", orderDate=" + orderDate + ", isActive=" + isActive + "]";
+	}
+
+	public Integer getManufacturerId() {
+		return manufacturerId;
+	}
+
+	public void setManufacturerId(Integer manufacturerId) {
+		this.manufacturerId = manufacturerId;
 	}	
 }

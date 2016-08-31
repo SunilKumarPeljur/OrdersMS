@@ -32,6 +32,11 @@ public class OrdersAPI {
 		Orders manufacturer = orderRepo.findOne(id);
 		return new ResponseEntity<Orders>(manufacturer, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/api/order/manufacturer/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<Orders>> findByManufacturerId(@PathVariable(value = "id") Integer id) {
+		return new ResponseEntity<List<Orders>>(orderRepo.findByManufactuerId(id), HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/api/order", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -52,6 +57,7 @@ public class OrdersAPI {
 			man.setOrderDate(manufac.getOrderDate());
 			man.setName(manufac.getName());
 			man.setIsActive(manufac.getIsActive());
+			man.setManufacturerId(manufac.getManufacturerId());
 			orderRepo.save(man);
 		} else {
 			return new ResponseEntity<String>("Manufacturer not found", HttpStatus.NOT_FOUND);
