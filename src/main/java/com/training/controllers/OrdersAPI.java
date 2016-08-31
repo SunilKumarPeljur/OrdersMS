@@ -1,5 +1,7 @@
 package com.training.controllers;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,13 @@ public class OrdersAPI {
 		return new ResponseEntity<List<Orders>>(orderRepo.findAll(), HttpStatus.OK);
 	}
 
+	/*@RequestMapping(value = "/api/order", method = RequestMethod.GET, produces = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<List<Orders>> findAll() {
+		List<Orders> orders = new ArrayList<Orders>();
+		orders.add(new Orders(1000, "Dummy order", new Date(), false));
+		return new ResponseEntity<List<Orders>>(orders, HttpStatus.OK);
+	}*/
 	@RequestMapping(value = "/api/order/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> delete(@PathVariable(value = "id") Integer id) {
 		orderRepo.delete(id);
