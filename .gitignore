@@ -54,3 +54,4 @@ target/*
 *.class
 *.class
 *.class
+.factorypath
