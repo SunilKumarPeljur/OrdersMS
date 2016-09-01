@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: orders-ms
-  cloud:
-    config:
-      uri: http://localhost:9190
-      
-server:
-  port: 9196
