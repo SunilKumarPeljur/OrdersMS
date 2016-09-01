@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import com.training.repository.Orders;
 import com.training.repository.OrdersRepository;
 
 @RestController
+@ConfigurationProperties(prefix = "newConfig")
+
 public class OrdersAPI {
 
 	@Autowired
@@ -34,25 +38,28 @@ public class OrdersAPI {
 		Orders manufacturer = orderRepo.findOne(id);
 		return new ResponseEntity<Orders>(manufacturer, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/api/order/manufacturer/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<Orders>> findByManufacturerId(@PathVariable(value = "id") Integer id) {
 		return new ResponseEntity<List<Orders>>(orderRepo.findByManufactuerId(id), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/api/order", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	
+	@RequestMapping(value = "/api/order", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<List<Orders>> findAll() {
 		return new ResponseEntity<List<Orders>>(orderRepo.findAll(), HttpStatus.OK);
 	}
-
-	/*@RequestMapping(value = "/api/order", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	 
+	/*
+	@RequestMapping(value = "/api/order", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<List<Orders>> findAll() {
 		List<Orders> orders = new ArrayList<Orders>();
-		orders.add(new Orders(1000, "Dummy order", new Date(), false));
+		orders.add(new Orders(1000, "Dummy Name", new Date(), false));
 		return new ResponseEntity<List<Orders>>(orders, HttpStatus.OK);
 	}*/
+
 	@RequestMapping(value = "/api/order/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> delete(@PathVariable(value = "id") Integer id) {
 		orderRepo.delete(id);
@@ -73,5 +80,5 @@ public class OrdersAPI {
 		}
 		return new ResponseEntity<String>("Updated", HttpStatus.OK);
 	}
-	
+
 }
